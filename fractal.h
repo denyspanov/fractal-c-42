@@ -9,5 +9,12 @@ typedef struct	s_data
 	void		*win;
 	void		*img;
 	char		*data;
-};
+	double		scale;
+	double		x_pos;
+	double		y_pos;
+	double		max;
+	int			win_width;
+	int			win_height;
+}				t_data;
+void			mlx_it(t_data **data);
 #endif
