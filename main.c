@@ -1,16 +1,17 @@
 
 #include "fractal.h"
+#include <pthread.h>
 
-void	ft_put_px(t_data **data, int x, int y, int color)
+void	ft_put_px(t_data **data, int x, int y, double color)
 {
 	int p;
 
 	p = (x * 4) + (y * 5120);
 	if (p >= 0 && p < (3686400) && x < 1280 && y < 720 && x > 0)
 	{
-		(*data)->data[p] = 5 * color;
-		(*data)->data[p + 1] = 1 * color;
-		(*data)->data[p + 2] = 0 * color;
+		(*data)->data[p] = 40 * color;
+		(*data)->data[p + 1] = 10 * color;
+		(*data)->data[p + 2] = 50 * color;
 	}
 }
 
@@ -33,6 +34,72 @@ void	ft_create_image(t_data **data, int n)
 	}
 }
 
+
+
+/*
+// I chose to represent pixels as int[2] and complex numbers as double[2]
+// Here are the indexes to access pixel and complex numebers arrays:
+
+# define X      0
+# define Y      1
+# define R      0   // real part
+# define I      1   // imaginary part
+
+c[R] = (pixel[X] - windowWidth) / (zoom * windowWidth);
+c[I] = (pixel[Y] - windowHeight) / (zoom * windowHeight);
+z[R] = 0.0f;
+z[I] = 0.0f;
+i = 0;
+while (z[R] * z[R] + z[I] * z[I] < 4 && ++i < maxIterations)
+{
+tmp = z[R] * z[R] - z[I] * z[I] + c[R];
+z[I] = z[R] * z[I] + z[R] * z[I] + c[I];
+z[R] = tmp;
+}
+if (i < maxIterations)
+{
+// get pixel color
+// call to draw function
+}
+*/
+
+/*void	mandelbrot(t_data **data)
+{
+	int x1 = 0;
+	int y1 = 0;
+	int d_x;
+	int d_y = -1;
+	double tmp;
+	double c_r = (x1 - (*data)->win_width) / ((*data)->scale * (*data)->win_width);
+	double c_i = (y1 - (*data)->win_height) / ((*data)->scale * (*data)->win_height);
+	double x = 0.0;
+	double y = 0.0;
+	int i;
+	ft_create_image(&(*data), 1);
+	while (++d_y < (*data)->win_height)
+	{
+		d_x = -1;
+		while (++d_x < (*data)->win_width)
+		{
+			c_r = (d_x - (*data)->win_width) / ((*data)->scale * (*data)->win_width);
+			c_i = (d_y - (*data)->win_height) / ((*data)->scale * (*data)->win_height);
+			i = 0;
+			x = 0;
+			y = 0;
+			while (x * x + y * y < 4 && i < 100) {
+				tmp = x * x - y * y + c_r;
+				y = 2 * x * y + c_i;
+				x = tmp;
+				i++;
+			}
+			if (i < 100)
+				ft_put_px(&(*data), d_x, d_y, i);
+		}
+	}
+	ft_create_image(&(*data), 2);
+}*/
+
+
 void mandelbrot(t_data **data)
 {
 	ft_create_image(&(*data), 1);
@@ -44,6 +111,8 @@ void mandelbrot(t_data **data)
 			c_re = c_re / (*data)->scale + (*data)->x_pos;
 			c_im = c_im / (*data)->scale + (*data)->y_pos;
 			double x = 0, y = 0;
+			double z_n;
+
 			int iteration = 0;
 			while (x*x+y*y <= 4 && iteration < (*data)->max)
 			{
@@ -53,7 +122,67 @@ void mandelbrot(t_data **data)
 				iteration++;
 			}
 			if (iteration < (*data)->max)
-				ft_put_px(&(*data),col,row, iteration * 2);
+				ft_put_px(&(*data),col,row, iteration + 1 - (log(2) / y) / log (2));
+			else
+				ft_put_px(&(*data),col,row, 0);
+		}
+	ft_create_image(&(*data), 2);
+}
+
+void burning_ship(t_data **data)
+{
+	ft_create_image(&(*data), 1);
+	for (int row = 0; row < (*data)->win_height; row++)
+		for (int col = 0; col < (*data)->win_width; col++)
+		{
+			double c_re = (col - (*data)->win_width/2.0)*4.0/(*data)->win_width;
+			double c_im = (row - (*data)->win_height/2.0)*4.0/(*data)->win_width;
+			c_re = c_re / (*data)->scale + (*data)->x_pos;
+			c_im = c_im / (*data)->scale + (*data)->y_pos;
+			double x = 0, y = 0;
+			int iteration = 0;
+			double z_n;
+			while (x*x+y*y <= 9 && iteration < (*data)->max)
+			{
+				double tmp = y;
+				y = fabs((double)(x * y + x * y + c_im));
+				x = fabs((double)(x * x - tmp * tmp + c_re));
+				iteration++;
+			}
+			z_n = sqrt(x*x+y*y);
+			if (iteration < (*data)->max)
+				ft_put_px(&(*data),col,row, iteration + 1 - (log(2) / z_n) / log (2));
+			else
+				ft_put_px(&(*data),col,row, 0);
+		}
+	ft_create_image(&(*data), 2);
+}
+
+void newton(t_data **data)
+{
+	ft_create_image(&(*data), 1);
+	for (int row = 0; row < (*data)->win_height; row++)
+		for (int col = 0; col < (*data)->win_width; col++)
+		{
+			double c_re = (col - (*data)->win_width/2.0)*4.0/(*data)->win_width;
+			double c_im = (row - (*data)->win_height/2.0)*4.0/(*data)->win_width;
+			c_re = c_re / (*data)->scale + (*data)->x_pos;
+			c_im = c_im / (*data)->scale + (*data)->y_pos;
+			double x = 0, y = 0;
+			int iteration = 0;
+			double tmp = 1.0;
+			while (tmp > 0.000001 && iteration < (*data)->max)
+			{
+				double x_old = x;
+				double y_old = y;
+				tmp = (x * x + y * y) * (x * x + y * y);
+				x = (2 * x * tmp + x * x - y * y) / (3.0 * tmp);
+				y = (2 * y * (tmp - x_old)) / (3.0 * tmp);
+				tmp = (x - x_old) * (x - x_old) + (y - y_old) * (y - y_old);
+				iteration++;
+			}
+			if (iteration < (*data)->max)
+				ft_put_px(&(*data),col,row, iteration + 1 - (log(2) / x) / log (2));
 			else
 				ft_put_px(&(*data),col,row, 0);
 		}
@@ -69,8 +198,8 @@ void	julia(t_data **data)
 	int maxIterations = 300; //after how much iterations the function should stop
 
 	//pick some values for the constant c, this determines the shape of the Julia Set
-	cRe = -0.7;
-	cIm = 0.27015;
+	cRe = -0.47;
+	cIm = 0.544992;
 	ft_create_image(&(*data), 1);
 	//loop through every pixel
 	for(int y = 0; y < (*data)->win_height; y++)
@@ -111,9 +240,8 @@ int		key_f(int keycode, t_data **data)
 		(*data)->y_pos += 0.1 / (*data)->scale;
 	if (keycode == 65362)
 		(*data)->y_pos -= 0.1/ (*data)->scale;
-	if (keycode == 100) {
+	if (keycode == 100)
 		(*data)->scale *= 2;
-		(*data)->max *= 2;}
 	if (keycode == 99)
 		(*data)->scale /= 2;
 	return (0);
@@ -121,7 +249,7 @@ int		key_f(int keycode, t_data **data)
 
 int		loop_event(t_data **data)
 {
-	mandelbrot(&(*data));
+	burning_ship(&(*data));
 	return (0);
 }
 
