@@ -1,32 +1,39 @@
 #include "fractal.h"
 
-void    mandelbrot(t_data **data)
+void	norm_helper_man(t_fractal *fract, t_data *data,int y_start)
 {
-	ft_create_image(&(*data), 1);
-	(*data)->row = -1;
-	while (++(*data)->row < (*data)->win_height)
+	fract->c_re = (fract->s - data->win_width / 2.0) * 4.0 / data->win_width;
+	fract->c_im = (y_start - data->win_height / 2.0) * 4.0 / data->win_width;
+	fract->c_re =fract->c_re / data->scale + data->x_pos;
+	fract->c_im = fract->c_im / data->scale + data->y_pos;
+	fract->x = 0;
+	fract->y = 0;
+	fract->iteration = -1;
+}
+
+void    mandelbrot(t_data *data, int x_start, int x_end, int y_start)
+{
+	t_fractal *fract;
+
+	fract = (t_fractal *)malloc(sizeof(t_fractal));
+	while (y_start < data->win_height)
 	{
-		(*data)->col = -1;
-		while (++(*data)->col < (*data)->win_width)
+		fract->s = x_start;
+		while (fract->s < x_end)
 		{
-			(*data)->c_re = ((*data)->col - (*data)->win_width / 2.0) * 4.0 / (*data)->win_width;
-			(*data)->c_im = ((*data)->row - (*data)->win_height / 2.0) * 4.0 / (*data)->win_width;
-			(*data)->c_re = (*data)->c_re / (*data)->scale + (*data)->x_pos;
-			(*data)->c_im = (*data)->c_im / (*data)->scale + (*data)->y_pos;
-			(*data)->x = 0;
-			(*data)->y = 0;
-			(*data)->iteration = -1;
-			while ((*data)->x * (*data)->x + (*data)->y * (*data)->y < 4 && ++(*data)->iteration < (*data)->max)
+			norm_helper_man(fract, data, y_start);
+			while (fract->x * fract->x + fract->y * fract->y < 4 && ++fract->iteration < data->max)
 			{
-				(*data)->tmp = (*data)->x *(*data)-> x - (*data)->y * (*data)->y + (*data)->c_re;
-				(*data)->y = 2 * (*data)->x * (*data)->y + (*data)->c_im;
-				(*data)->x = (*data)->tmp;
+				fract->tmp = fract->x * fract->x - fract->y * fract->y + fract->c_re;
+				fract->y = 2 * fract->x * fract->y + fract->c_im;
+				fract->x = fract->tmp;
 			}
-			if ((*data)->iteration < (*data)->max)
-				ft_put_px(&(*data), (*data)->col, (*data)->row, (*data)->iteration * 2);
+			if (fract->iteration < data->max)
+				ft_put_px(data, fract->s, y_start, fract->iteration);
 			else
-				ft_put_px(&(*data), (*data)->col, (*data)->row, 0);
+				ft_put_px(data, fract->s, y_start, 0);
+			fract->s++;
 		}
+		y_start++;
 	}
-	ft_create_image(&(*data), 2);
 }
