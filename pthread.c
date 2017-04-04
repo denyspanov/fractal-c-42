@@ -8,6 +8,8 @@ void *thr_func(void *arg) {
 		mandelbrot(ss, data->x_start, data->x_end, data->y_start);
 	else if (data->data->fract == 3)
 		burningship(ss, data->x_start, data->x_end, data->y_start);
+	else if (data->data->fract == 2)
+		julia(ss, data->x_start, data->x_end, data->y_start);
 }
 
 int mult_thrd(t_data **data)

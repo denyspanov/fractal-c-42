@@ -5,16 +5,22 @@ void	standart_data(t_data **data, char *s)
 {
 	(*data)->scale = 0.8;
 	(*data)->y_pos = 0;
-	(*data)->fract = 1;
+	(*data)->r = 1;
+	(*data)->g = 1;
+	(*data)->b = 1;
 	(*data)->x_pos = 0;
     (*data)->threads = 1;
 	(*data)->mouse_y = 1;
 	(*data)->mouse_x = 1;
-	(*data)->win_width = 600;
-	(*data)->win_height = 600;
+	(*data)->win_width = 1280;
+	(*data)->win_height = 720;
 	(*data)->max = 30;
+}
+
+void	mlx_it(t_data **data)
+{
 	(*data)->mlx = mlx_init();
-	(*data)->win = mlx_new_window((*data)->mlx,(*data)->win_width,(*data)->win_height, s);
+	(*data)->win = mlx_new_window((*data)->mlx,(*data)->win_width,(*data)->win_height, "Fractal");
 }
 
 void	fractal_selection(char *s, t_data **data)
@@ -22,16 +28,19 @@ void	fractal_selection(char *s, t_data **data)
 	if (!ft_strcmp(s, "mandelbrot"))
 	{
 		standart_data(&(*data), "Fractal: Mandelbrot.");
+		mlx_it(&(*data));
 		(*data)->fract = 1;
 	}
 	else if (!ft_strcmp(s, "julia"))
 	{
 		standart_data(&(*data), "Fractal: Julia.");
+		mlx_it(&(*data));
 		(*data)->fract = 2;
 	}
 	else if (!ft_strcmp(s, "burningship"))
 	{
 		standart_data(&(*data), "Fractal: BurningShip.");
+		mlx_it(&(*data));
 		(*data)->fract = 3;
 	}
 	else
