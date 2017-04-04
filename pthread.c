@@ -12,17 +12,17 @@ void *thr_func(void *arg) {
 
 int mult_thrd(t_data **data)
 {
-	pthread_t thr[NUM_THREADS];
+	pthread_t thr[(*data)->threads];
 	int i;
 	int rc;
-	t_thread_data thr_data[NUM_THREADS];
+	t_thread_data thr_data[(*data)->threads];
 	ft_create_image(&(*data), 1);
-	for (i = 0; i < NUM_THREADS; i++)
+	for (i = 0; i < (*data)->threads; i++)
 	{
 		thr_data[i].tid = i;
 		thr_data[i].data = (*data);
-		thr_data[i].x_start = (*data)->win_width / NUM_THREADS * i;
-		thr_data[i].x_end = (*data)->win_width / NUM_THREADS * (i + 1);
+		thr_data[i].x_start = (*data)->win_width / (*data)->threads * i;
+		thr_data[i].x_end = (*data)->win_width / (*data)->threads * (i + 1);
 		thr_data[i].y_start = 0;
 		thr_data[i].y_end = (*data)->win_height;
 		if ((rc = pthread_create(&thr[i], NULL, thr_func, &thr_data[i]))) {
@@ -30,10 +30,11 @@ int mult_thrd(t_data **data)
 			return EXIT_FAILURE;
 		}
 	}
-	for (i = 0; i < NUM_THREADS; i++)
+	for (i = 0; i < (*data)->threads; i++)
 	{
 		pthread_join(thr[i], NULL);
 	}
 	ft_create_image(&(*data), 2);
+    ft_put_menu(&(*data));
 	return EXIT_SUCCESS;
 }

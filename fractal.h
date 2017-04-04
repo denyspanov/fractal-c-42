@@ -10,6 +10,9 @@
  # define MINUS_N 65453
  # define PLUS_K 61
  # define MINUS_K 45
+ # define ONE_N 65436
+ # define TWO_N 65433
+
 # else
  # define LEFT 123
  # define RIGHT 124
@@ -24,7 +27,8 @@
 # define NUM_THREADS 4
 # define MotionNotify 6
 # define PointerMotionMask (1L<<6)
-# include "mlx.h"
+
+#include "mlx.h"
 # include <pthread.h>
 # include "libft/libft.h"
 # include <math.h>
@@ -51,6 +55,7 @@ typedef struct	s_data
 	int			win_width;
 	int			win_height;
 	int			fract;
+    int threads;
 }				t_data;
 typedef struct s_thread_data {
 	int			tid;
@@ -71,7 +76,7 @@ typedef struct s_fractal {
 	double tmp;
 }t_fractal;
 
-int		selector(t_data **data);
+void	ft_put_menu(t_data **data);
 int		key_f(int keycode, t_data **data);
 void    burningship(t_data *data, int x_start, int x_end, int y_start);
 int		mouse_hook(int x, int y, t_data **data);
@@ -79,4 +84,5 @@ void    mandelbrot(t_data *data, int x, int x1, int y);
 void	ft_put_px(t_data *data, int x, int y, double color);
 void	ft_create_image(t_data **data, int n);
 int		mult_thrd(t_data **data);
+void	errors(int i);
 #endif

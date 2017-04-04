@@ -7,10 +7,11 @@ void	standart_data(t_data **data, char *s)
 	(*data)->y_pos = 0;
 	(*data)->fract = 1;
 	(*data)->x_pos = 0;
+    (*data)->threads = 1;
 	(*data)->mouse_y = 1;
 	(*data)->mouse_x = 1;
-	(*data)->win_width = 500;
-	(*data)->win_height = 500;
+	(*data)->win_width = 600;
+	(*data)->win_height = 600;
 	(*data)->max = 30;
 	(*data)->mlx = mlx_init();
 	(*data)->win = mlx_new_window((*data)->mlx,(*data)->win_width,(*data)->win_height, s);
@@ -34,7 +35,7 @@ void	fractal_selection(char *s, t_data **data)
 		(*data)->fract = 3;
 	}
 	else
-		exit (0);
+		errors(2);
 }
 
 int     main(int argc, char **argv)
@@ -51,6 +52,6 @@ int     main(int argc, char **argv)
 		mlx_loop(data->mlx);
     }
     else
-		ft_putstr("Usage: ./fractal [fractal]\nSelect: mandelbrot, Julia, BurningShip.\n");
+		errors(1);
     return (0);
 }
