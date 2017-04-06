@@ -1,6 +1,6 @@
 # Fractal - dpanov (Denys Panov)
 
-<img align="right"  src="https://www.google.com.ua/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwj7xcium4_TAhUK6xQKHVjUAkgQjRwIBw&url=http%3A%2F%2Fwww.fractal.org%2FBewustzijns-Besturings-Model%2FFractals-Useful-Beauty.htm&bvm=bv.151426398,d.ZGg&psig=AFQjCNFX7T9WVIivtrzyVLDROhlI-MJ37Q&ust=1491546890755190" width="45%" />
+<img align="right"  src="http://i.stack.imgur.com/I5CqC.jpg" width="45%" />
 This is a project of <a href="http://www.unit.ua/" target="_blank" >UNIT Factory</a>
 
 Available fractal : Julia, Mandelbrot, Burningship, Brain, Brain_1, Juliav.
