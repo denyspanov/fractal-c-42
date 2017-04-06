@@ -10,7 +10,6 @@ Available fractal : Julia, Mandelbrot, Burningship, Brain, Brain_1, Juliav.
 ### Overview
 
 This is a project for UNIT Factory that asks you to make a fractal navigator letting you browse the Mandelbrot set and any other set. Though it asks you to include at least one more fractal, I decided to include several more, most of them variations of the Mandelbrot or the Julia (different exponent, absolute value), but some unique (like brain).
-<br /><br /><br /><br /><br /><br /><br /><br />
 
 ### Usage
 	$>  make
