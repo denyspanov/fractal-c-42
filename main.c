@@ -96,7 +96,7 @@ int		main(int argc, char **argv)
 		mlx_mouse_hook(data->win, mouse_hook, &data);
 		mlx_hook(data->win, MOT, POINT,
 julia_trash, &data);
-		mlx_hook(data->win, 2, 0, key_f, &data);
+		mlx_hook(data->win, 2, 3, key_f, &data);
 		mlx_hook(data->win, 17, 0, key_x, &data);
 		mlx_loop_hook(data->mlx, &mult_thrd, &data);
 		mlx_loop(data->mlx);
