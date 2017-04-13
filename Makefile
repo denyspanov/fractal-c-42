@@ -30,7 +30,6 @@ SRC		= main.c \
 		  juliav.c \
 		  mandelbrot.c \
 		  pthread.c \
-		  $(addprefix fractals/,$(shell ls $(SRCDIR)/fractals | grep -E ".+\.c"))
 
 OBJ		= $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
@@ -61,7 +60,6 @@ all: obj $(FT_LIB) $(MLX_LIB) $(NAME)
 
 obj:
 	mkdir -p $(OBJDIR)
-	mkdir -p $(OBJDIR)/fractals
 
 $(OBJDIR)/%.o:$(SRCDIR)/%.c
 	$(CC) $(CFLAGS) $(MLX_INC) $(FT_INC) -I $(INCDIR) -o $@ -c $<
